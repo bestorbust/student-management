@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template,redirect,url_for
 import sqlite3
 
 app = Flask(__name__)
-def init_db:
+def init_db():
     conn = sqlite3.connect('students.db')
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS students (
