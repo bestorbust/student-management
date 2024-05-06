@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+    <link rel="stylesheet" href="/static/st.css">
+</head>
+<body>
+    <h1>Student Management</h1>
+    
+    <h2>All Students</h2>
+    <ul>
+        {% for std in student %}
+            <li>USN: {{ std[1] }}, Name: {{ std[2] }}, Age: {{ std[3] }}, Subject1: {{ std[4] }},Subject2: {{ std[5] }}, Subject3: {{ std[6] }}, Subject4: {{ std[7] }}, Subject5: {{ std[8] }},Percentage:{{ ((std[8] + std[4] + std[5] + std[6] + std[7]) / 5) | round(2) }}%</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add Student</h2>
+    <form action="/add" method="post">
+        Usn: <input type="text" name="std_id" required><br>
+        Name: <input type="text" name="name" required><br>
+        Age: <input type="number" name="age" required><br>
+        Subject1: <input type="number"  name="subject1" required><br>
+        Subject2: <input type="number"  name="subject2" required><br>
+        Subject3:<input type="number"  name="subject3" required><br>
+        Subject4:<input type="number"  name="subject4" required><br>
+        Subject5:<input type="number"  name="subject5" required><br>
+        <input type="submit" value="Add Student">
+        
+    </form>
+    
+    <h2>Update Student</h2>
+    <form action="/update" method="post">
+        Usn: <input type="text" name="std_id" required><br>
+        Name: <input type="text" name="name" required><br>
+        Age: <input type="number" name="age" required><br>
+        Subject1: <input type="number"  name="subject1" required><br>
+        Subject2: <input type="number"  name="subject2" required><br>
+        Subject3:<input type="number"  name="subject3" required><br>
+        Subject4:<input type="number"  name="subject4" required><br>
+        Subject5:<input type="number"  name="subject5" required><br>
+        <input type="submit" value="Update Student">
+    </form>
+
+    <h2>Delete Student</h2>
+    <form action="/delete" method="post">
+        Usn: <input type="number" name="std_id" required><br>
+        <input type="submit" value="Delete Student">
+    </form>
+
+    <h2>Search Books</h2>
+    <form action="/search" method="get">
+        Query: <input type="text" name="query"><br>
+        <input type="submit" value="Search">
+    </form>
+
+    <div id="search-results"></div>
+    
+    <script>
+        document.querySelector('form[action="/search"]').addEventListener('submit', function(event) {
+            event.preventDefault();
+            fetch(`/search?query=${document.querySelector('input[name="query"]').value}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('search-results');
+                    resultsDiv.innerHTML = '';
+                    data.forEach(std => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `ID: ${std[1]}, Name: ${std[2]}, Age: ${std[3]}`;
+                        resultsDiv.appendChild(listItem);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>
