@@ -65,5 +65,3 @@ def search_student():
     return jsonify(results)
         
 init_db() 
-if __name__=='main':
-    app.run(debug=True)
